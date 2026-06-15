@@ -9,11 +9,10 @@ public class PlayerJump : MonoBehaviour
 
     public float firstSpeed = 16.0f; // 初速
     public const float gravity = 120.0f; // 重力
-    public const float jumpLowerLimit = 0.03f; // ジャンプ時間の下限
 
     float timer = 0f; // 経過時間
     bool jumpKey = false; // ジャンプキー
-    bool keyLook = false; // キー入力を受け付けない
+
 
     enum Status
     {
@@ -24,8 +23,16 @@ public class PlayerJump : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (playerStatus == Status.DOWN && collision.gameObject.name.Contains("Ground"))
+        if (playerStatus == Status.DOWN && collision.gameObject.CompareTag("Ground"))
         {
+            playerStatus = Status.GROUND;
+        }
+        Debug.Log("Hit : " + collision.gameObject.name);
+
+        if (playerStatus == Status.DOWN &&
+            collision.gameObject.CompareTag("Ground"))
+        {
+            Debug.Log("Landing");
             playerStatus = Status.GROUND;
         }
     }
@@ -40,13 +47,9 @@ public class PlayerJump : MonoBehaviour
         // キー入力取得
         if (Input.GetKey(KeyCode.Space))
         {
-            jumpKey = !keyLook;
+            jumpKey = true;
         }
-        else
-        {
-            jumpKey = false;
-            keyLook = false;
-        }
+        //Debug.Log(playerStatus);
     }
 
     void FixedUpdate()
@@ -65,20 +68,10 @@ public class PlayerJump : MonoBehaviour
 
             // 上昇時
             case Status.UP:
-                timer += Time.deltaTime;
 
-                if (jumpKey || jumpLowerLimit > timer)
-                {
-                    newvec.y = firstSpeed;
-                    newvec.y -= (gravity * Mathf.Pow(timer, 2));
-                }
-
-                else
-                {
-                    timer += Time.deltaTime; // 落下を早める
-                    newvec.y = firstSpeed;
-                    newvec.y -= (gravity * Mathf.Pow(timer, 2));
-                }
+                timer += Time.deltaTime; // 落下を早める
+                newvec.y = firstSpeed;
+                newvec.y -= (gravity * Mathf.Pow(timer, 2));
 
                 if (0f > newvec.y)
                 {
@@ -110,7 +103,7 @@ public class PlayerJump : MonoBehaviour
         {
             playerStatus = Status.GROUND;
             timer = 0f;
-            keyLook = true; // キー操作をロックする
+            jumpKey = false;
         }
     }
 }
