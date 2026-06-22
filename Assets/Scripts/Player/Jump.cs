@@ -8,7 +8,7 @@ public class PlayerJump : MonoBehaviour
     Status playerStatus = Status.GROUND; // プレイヤーの状態
 
     public float firstSpeed = 16.0f; // 初速
-    public const float gravity = 120.0f; // 重力
+    public float gravity = 120.0f; // 重力
 
     float timer = 0f; // 経過時間
     bool jumpKey = false; // ジャンプキー
@@ -56,6 +56,12 @@ public class PlayerJump : MonoBehaviour
     {
         Vector2 newvec = Vector2.zero;
 
+        rigidbody2d.velocity = new Vector2(
+            rigidbody2d.velocity.x,
+            newvec.y
+        );
+
+
         switch (playerStatus)
         {
             // 接地時
@@ -99,7 +105,7 @@ public class PlayerJump : MonoBehaviour
     void OnCollisionStay2D(Collision2D collision)
     {
         if (playerStatus == Status.DOWN &&
-            collision.gameObject.name.Contains("Ground"))
+            collision.gameObject.CompareTag("Ground"))
         {
             playerStatus = Status.GROUND;
             timer = 0f;
