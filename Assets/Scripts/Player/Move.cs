@@ -8,6 +8,7 @@ public class Move : MonoBehaviour
     public float speed = 3.0f;
     Rigidbody2D rigidbody2d;
     float horizontalInput;
+    public bool FacingRight = true;
     
     // Start is called before the first frame update
     void Start()
@@ -20,6 +21,8 @@ public class Move : MonoBehaviour
     {
         // 水平方向の入力（左右キー）
         horizontalInput = Input.GetAxisRaw("Horizontal");
+        if (horizontalInput > 0) FacingRight = true;
+        else if (horizontalInput < 0) FacingRight = false;
 
     }
     void FixedUpdate()

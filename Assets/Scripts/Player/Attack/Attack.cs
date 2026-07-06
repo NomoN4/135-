@@ -12,11 +12,12 @@ public class Attack : MonoBehaviour
         rigidbody2d = GetComponent<Rigidbody2D>();
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if(collision.gameObject.CompareTag("Enemy"))
+        if(other.CompareTag("Enemy"))
         {
-            EnemyHealth enemy = collision.gameObject.GetComponent<EnemyHealth>();
+            Debug.Log("aaa");
+            EnemyHealth enemy = other.GetComponent<EnemyHealth>();
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
