@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerJump : MonoBehaviour
+public class Jump : MonoBehaviour
 {
     Rigidbody2D rigidbody2d;
     Status playerStatus = Status.GROUND; // プレイヤーの状態
@@ -26,15 +26,9 @@ public class PlayerJump : MonoBehaviour
         if (playerStatus == Status.DOWN && collision.gameObject.CompareTag("Ground"))
         {
             playerStatus = Status.GROUND;
+            jumpKey = false;
         }
         Debug.Log("Hit : " + collision.gameObject.name);
-
-        if (playerStatus == Status.DOWN &&
-            collision.gameObject.CompareTag("Ground"))
-        {
-            Debug.Log("Landing");
-            playerStatus = Status.GROUND;
-        }
     }
 
     void Start()
@@ -52,15 +46,17 @@ public class PlayerJump : MonoBehaviour
         //Debug.Log(playerStatus);
     }
 
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (!jumpKey)
+        {
+            playerStatus = Status.DOWN;
+        }
+    }
+
     void FixedUpdate()
     {
         Vector2 newvec = Vector2.zero;
-
-        rigidbody2d.velocity = new Vector2(
-            rigidbody2d.velocity.x,
-            newvec.y
-        );
-
 
         switch (playerStatus)
         {
@@ -68,6 +64,7 @@ public class PlayerJump : MonoBehaviour
             case Status.GROUND:
                 if (jumpKey)
                 {
+                    timer = 0f;
                     playerStatus = Status.UP;
                 }
                 break;
@@ -99,7 +96,10 @@ public class PlayerJump : MonoBehaviour
                 break;
         }
 
-        rigidbody2d.velocity = newvec;
+        rigidbody2d.velocity = new Vector2(
+            rigidbody2d.velocity.x,
+            newvec.y
+        );
     }
 
     void OnCollisionStay2D(Collision2D collision)
@@ -113,4 +113,3 @@ public class PlayerJump : MonoBehaviour
         }
     }
 }
-
