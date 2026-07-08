@@ -795,6 +795,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 8
   FacingRight: 1
+  Canmove: 1
 --- !u!114 &1720910271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -828,13 +829,21 @@ MonoBehaviour:
   - 0.5
   - 0.7
   - 1
-  ActiveFrame:
-  - 5
-  - 10
-  - 10
-  - 10
-  - 10
+  AttackFrame:
   - 15
+  - 24
+  - 38
+  - 25
+  - 20
+  - 30
+  ActiveFrame:
+  - 20
+  - 25
+  - 40
+  - 30
+  - 20
+  - 30
+  isAttacking: 0
   hitboxPrefabs:
   - {fileID: 9199157211643631912, guid: ca9b4f7bdd50b784cbe2ab0cac48dee3, type: 3}
   - {fileID: 570957883218196901, guid: ea67e6543bd3dc043a097ab848e41c95, type: 3}

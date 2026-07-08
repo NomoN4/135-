@@ -9,6 +9,7 @@ public class Move : MonoBehaviour
     Rigidbody2D rigidbody2d;
     float horizontalInput;
     public bool FacingRight = true;
+    public bool Canmove = true;
     
     // Start is called before the first frame update
     void Start()
@@ -28,10 +29,21 @@ public class Move : MonoBehaviour
     void FixedUpdate()
     {
         // x方向だけ変更し、ジャンプ側が設定した y速度は残す
-        rigidbody2d.velocity = new Vector2(
-            horizontalInput * speed,
-            rigidbody2d.velocity.y
-        );
+        if (Canmove)
+        {
+            rigidbody2d.velocity = new Vector2(
+                horizontalInput * speed,
+                rigidbody2d.velocity.y
+            );
+        }
+        else
+        {
+            rigidbody2d.velocity = new Vector2(
+                0,
+                rigidbody2d.velocity.y
+            );
+        }
+
     }
 
 }
