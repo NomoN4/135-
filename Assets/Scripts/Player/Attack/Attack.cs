@@ -16,7 +16,6 @@ public class Attack : MonoBehaviour
     {
         if(other.CompareTag("Enemy"))
         {
-            Debug.Log("aaa");
             EnemyHealth enemy = other.GetComponent<EnemyHealth>();
             if (enemy != null)
             {

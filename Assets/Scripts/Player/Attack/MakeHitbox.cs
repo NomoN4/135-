@@ -10,19 +10,46 @@ public class MakeHitbox : MonoBehaviour
     public float[] AttackFrame; //攻撃判定がでるフレーム
     public float[] ActiveFrame; //全体フレーム
     public bool isAttacking = false;
+    public Sprite RunnningImage; //通常状態の画像
+    public Sprite[] attackImage; //攻撃画像
     public GameObject[] hitboxPrefabs;
     public float FPS = 60f;
     float Freezetimer = 0f; //攻撃中動けなくするためのタイマー
     Move move;
-    // Start is called before the first frame update
+    public DiceUI diceui;
+    private SpriteRenderer spriteRenderer;
+
     int GenerateRandom1to6()
     {
         return Random.Range(1, 7);
     }
+
+    public void SetAttackImage(int attacktype)
+    {
+        // 1～6 → 配列の0～5
+        int index = attacktype - 1;
+
+        if (index < 0 || index >= 6)
+        {
+            Debug.LogError("攻撃番号が不正です: " + attacktype);
+            return;
+        }
+        
+        spriteRenderer.sprite = attackImage[index];
+        return;
+    }
+
+    public void SetRunningImage()
+    {
+        spriteRenderer.sprite = RunnningImage;
+    }
+    
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         attacktype = GenerateRandom1to6();
         move = GetComponent<Move>();
+        diceui.SetNumber(attacktype);
     }
 
     // Update is called once per frame
@@ -32,6 +59,7 @@ public class MakeHitbox : MonoBehaviour
         {
             move.Canmove = true;
             Freezetimer = 0f;
+            SetRunningImage(); //画像を元に戻す
         }
         else if(move.Canmove == false)
         {
@@ -40,6 +68,7 @@ public class MakeHitbox : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && move.Canmove)
         {
             move.Canmove = false;
+            SetAttackImage(attacktype); //攻撃用の画像にする
             Freezetimer = 0f;
             Vector3 pos = transform.position;
             if (move.FacingRight)
@@ -47,15 +76,24 @@ public class MakeHitbox : MonoBehaviour
             else
                 pos.x -= xOffsets[attacktype - 1];
 
+
             GameObject hitbox = Instantiate(
                 hitboxPrefabs[attacktype - 1],
                 pos,
                 Quaternion.identity
-            );
+            );     
+
+            HitboxMove hitboxMove = hitbox.GetComponent<HitboxMove>();
+
+            if (hitboxMove != null)
+            {
+                hitboxMove.move = move;
+            }
             Destroy(hitbox, AttackFrame[attacktype - 1] / FPS);
             
             preattacktype = attacktype;
             attacktype = GenerateRandom1to6();
+            diceui.SetNumber(attacktype);
             
         }
     }
