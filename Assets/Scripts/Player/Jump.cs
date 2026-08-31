@@ -5,30 +5,21 @@ using UnityEngine;
 public class Jump : MonoBehaviour
 {
     Rigidbody2D rigidbody2d;
-    Status playerStatus = Status.GROUND; // プレイヤーの状態
+    Status playerStatus = Status.GROUND;
 
-    public float firstSpeed = 16.0f; // 初速
-    public float gravity = 120.0f; // 重力
+    public float firstSpeed = 16.0f;
+    public float gravity = 120.0f;
 
-    float timer = 0f; // 経過時間
-    bool jumpKey = false; // ジャンプキー
+    public int maxJumpCount = 2; // 最大ジャンプ回数
+    private int jumpCount = 0;   // 現在のジャンプ回数
 
+    float timer = 0f;
+    bool jumpKey = false;
 
     enum Status
     {
         GROUND = 1,
         UP = 2,
-        DOWN = 3
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (playerStatus == Status.DOWN && collision.gameObject.CompareTag("Ground"))
-        {
-            playerStatus = Status.GROUND;
-            jumpKey = false;
-        }
-        Debug.Log("Hit : " + collision.gameObject.name);
     }
 
     void Start()
@@ -38,78 +29,32 @@ public class Jump : MonoBehaviour
 
     void Update()
     {
-        // キー入力取得
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            jumpKey = true;
+            if (jumpCount < maxJumpCount)
+            {
+                jumpKey = true;
+                playerStatus = Status.UP;
+                jumpCount++;
+                rigidbody2d.velocity = new Vector2(
+                    rigidbody2d.velocity.x,
+                    rigidbody2d.velocity.y + firstSpeed
+                );
+            }
         }
-        //Debug.Log(playerStatus);
     }
 
-    void OnCollisionExit2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!jumpKey)
-        {
-            playerStatus = Status.DOWN;
-        }
-    }
-
-    void FixedUpdate()
-    {
-        Vector2 newvec = Vector2.zero;
-
-        switch (playerStatus)
-        {
-            // 接地時
-            case Status.GROUND:
-                if (jumpKey)
-                {
-                    timer = 0f;
-                    playerStatus = Status.UP;
-                }
-                break;
-
-            // 上昇時
-            case Status.UP:
-
-                timer += Time.deltaTime; // 落下を早める
-                newvec.y = firstSpeed;
-                newvec.y -= (gravity * Mathf.Pow(timer, 2));
-
-                if (0f > newvec.y)
-                {
-                    playerStatus = Status.DOWN;
-                    newvec.y = 0f;
-                    timer = 0.1f;
-                }
-                break;
-
-            // 落下時
-            case Status.DOWN:
-                timer += Time.deltaTime;
-
-                newvec.y = 0f;
-                newvec.y = -(gravity * Mathf.Pow(timer, 2));
-                break;
-
-            default:
-                break;
-        }
-
-        rigidbody2d.velocity = new Vector2(
-            rigidbody2d.velocity.x,
-            newvec.y
-        );
-    }
-
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        if (playerStatus == Status.DOWN &&
-            collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground"))
         {
             playerStatus = Status.GROUND;
-            timer = 0f;
             jumpKey = false;
+            timer = 0f;
+            jumpCount = 0; // ジャンプ回数リセット
         }
+
+        Debug.Log("Hit : " + collision.gameObject.name);
     }
+
 }
