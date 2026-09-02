@@ -11,6 +11,7 @@ public class MainCharaHealth : MonoBehaviour
     private float mutekitimer = 0f;
     public int touchdamage;
     Rigidbody2D rigidbody2d;
+    DamageFlash damageflash;
 
     private void Awake()
     {
@@ -36,6 +37,7 @@ public class MainCharaHealth : MonoBehaviour
 
     void Start(){
         rigidbody2d = GetComponent<Rigidbody2D>();
+        damageflash = GetComponent<DamageFlash>();
     }
     void Update(){
         if (mutekitimer > 0){
@@ -45,6 +47,7 @@ public class MainCharaHealth : MonoBehaviour
     void OnTriggerStay2D(Collider2D other){
         if (other.CompareTag("Enemy") && mutekitimer <= 0){
             TakeDamage(touchdamage);
+            damageflash.Flash();
             mutekitimer = mutekijikan;
         }
         

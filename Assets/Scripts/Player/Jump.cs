@@ -5,22 +5,12 @@ using UnityEngine;
 public class Jump : MonoBehaviour
 {
     Rigidbody2D rigidbody2d;
-    Status playerStatus = Status.GROUND;
 
     public float firstSpeed = 16.0f;
     public float gravity = 120.0f;
 
     public int maxJumpCount = 2; // 最大ジャンプ回数
     private int jumpCount = 0;   // 現在のジャンプ回数
-
-    float timer = 0f;
-    bool jumpKey = false;
-
-    enum Status
-    {
-        GROUND = 1,
-        UP = 2,
-    }
 
     void Start()
     {
@@ -33,8 +23,6 @@ public class Jump : MonoBehaviour
         {
             if (jumpCount < maxJumpCount)
             {
-                jumpKey = true;
-                playerStatus = Status.UP;
                 jumpCount++;
                 rigidbody2d.velocity = new Vector2(
                     rigidbody2d.velocity.x,
@@ -48,9 +36,6 @@ public class Jump : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            playerStatus = Status.GROUND;
-            jumpKey = false;
-            timer = 0f;
             jumpCount = 0; // ジャンプ回数リセット
         }
 

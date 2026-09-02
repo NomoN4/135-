@@ -17,9 +17,11 @@ public class Attack : MonoBehaviour
         if(other.CompareTag("Enemy"))
         {
             EnemyHealth enemy = other.GetComponent<EnemyHealth>();
+            DamageFlash damageflash = other.GetComponent<DamageFlash>();
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
+                damageflash.Flash();
             }
         }
     }

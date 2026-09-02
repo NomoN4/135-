@@ -10,7 +10,7 @@ public class BirdEnemy : MonoBehaviour
     public float speed = 3f;
     public float amplitude = 1f;
     public float frequency = 2f;
-    public bool 
+    public int GoRight = 1; //右が1,左が-1
     public float leftlim;
     public float rightlim;
 
@@ -37,19 +37,34 @@ public class BirdEnemy : MonoBehaviour
             {
                 charging = true;
                 chargeDirection = (player.position - transform.position).normalized;
+                if(player.position.x - transform.position.x < 0){
+                    GoRight = -1;
+                    Debug.Log("左！");
+                }
+                else{
+                    GoRight = 1;
+                    Debug.Log("右！");
+                }
             }
         }
         else
         {
             Charge();
         }
+        Debug.Log(GoRight);
     }
 
     void Patrol()
     {
-        startPos += Vector3.right * speed * Time.deltaTime;
+        if (transform.position.x > rightlim){
+            GoRight = -1;
+        }
+        if (transform.position.x < leftlim){
+            GoRight = 1;
+        }
+        startPos += Vector3.right * speed * Time.deltaTime * GoRight;
         
-        startPos = Mathf.Clamp(startPos + Vector3.right * speed * Time.deltaTime, leftlim, rightlim);
+        startPos = startPos + Vector3.right * speed * Time.deltaTime;
 
         float y = Mathf.Sin(Time.time * frequency) * amplitude;
 
@@ -71,5 +86,13 @@ public class BirdEnemy : MonoBehaviour
         ).normalized;
 
         transform.position += (Vector3)chargeDirection * chargeSpeed * Time.deltaTime;
+        if(player.position.x - transform.position.x < 0){
+            GoRight = -1;
+            Debug.Log("左！");
+        }
+        else{
+            GoRight = 1;
+            Debug.Log("右！");
+        }
     }
 }
