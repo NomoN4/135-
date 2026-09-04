@@ -21,7 +21,8 @@ public class Move : MonoBehaviour
     {
         // 水平方向の入力（左右キー）
         horizontalInput = Input.GetAxisRaw("Horizontal");
-        if (horizontalInput > 0) FacingRight = true;
+        //Debug.Log(horizontalInput);
+        if (horizontalInput > 0 && Canmove) FacingRight = true;
         else if (horizontalInput < 0) FacingRight = false;
 
     }

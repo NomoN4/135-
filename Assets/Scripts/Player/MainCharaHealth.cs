@@ -11,11 +11,6 @@ public class MainCharaHealth : MonoBehaviour
     Rigidbody2D rigidbody2d;
     DamageFlash damageflash;
 
-    private void Awake()
-    {
-        currentHp = PlayerStats.Instance.maxHP;
-    }
-
     private void Die()
     {
         Destroy(gameObject);
@@ -36,6 +31,7 @@ public class MainCharaHealth : MonoBehaviour
     void Start(){
         rigidbody2d = GetComponent<Rigidbody2D>();
         damageflash = GetComponent<DamageFlash>();
+        currentHp = PlayerStats.Instance.maxHP;
     }
     void Update(){
         if (mutekitimer > 0){

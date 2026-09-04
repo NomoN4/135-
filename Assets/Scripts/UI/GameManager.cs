@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 
     public int floor = 1;
     public bool bossBattle = false;
+    public Transform playerSpawnPoint;
+    public Transform player;
 
     void Awake()
     {
@@ -29,6 +31,8 @@ public class GameManager : MonoBehaviour
         floor++;
 
         EnemySpawner.Instance.SpawnEnemies(floor);
+        player.position = playerSpawnPoint.position;
+
     }
 
     public void StartBossBattle()

@@ -33,6 +33,7 @@ public class BuffManager : MonoBehaviour
             int index = i;
             buffButtons[i].onClick.RemoveAllListeners();
             buffButtons[i].onClick.AddListener(() => SelectBuff(index));
+            buffButtons[i].onClick.AddListener(() => GameManager.Instance.NextBattle());
         }
 
         buffPanel.SetActive(true);

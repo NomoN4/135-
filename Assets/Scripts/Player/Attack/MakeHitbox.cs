@@ -84,6 +84,24 @@ public class MakeHitbox : MonoBehaviour
                 pos,
                 Quaternion.identity
             );
+            if(attacktype != 5)
+            {
+                hitbox.transform.SetParent(transform); // transformはプレイヤー
+                if (move.FacingRight)
+                {
+                    hitbox.transform.localPosition = new Vector3(
+                        1f + xOffsets[attacktype - 1],
+                        0f + yOffsets[attacktype - 1],
+                        0f); // プレイヤーからの距離
+                }
+                else
+                {
+                    hitbox.transform.localPosition = new Vector3(
+                        -1f - xOffsets[attacktype - 1],
+                        0f + yOffsets[attacktype - 1],
+                        0f); // プレイヤーからの距離
+                }
+            }
 
             if (!move.FacingRight)
             {
