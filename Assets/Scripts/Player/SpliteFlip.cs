@@ -16,6 +16,9 @@ public class SpliteFlip : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        spriteRenderer.flipX = !move.FacingRight;
-    }
+        if(move.Canmove)
+        {
+            spriteRenderer.flipX = !move.FacingRight;
+        }
+    }    
 }

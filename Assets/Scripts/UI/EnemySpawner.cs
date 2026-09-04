@@ -49,6 +49,11 @@ public class EnemySpawner : MonoBehaviour
         {
             birdEnemy.player = player;
         }
+        GunEnemy gunEnemy = spawnedEnemy.GetComponent<GunEnemy>();
+        if(gunEnemy != null)
+        {
+            gunEnemy.player = player;
+        }
     }
 
     public void SpawnBoss()
