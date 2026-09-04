@@ -10,7 +10,7 @@ public class PlayerStats : MonoBehaviour
     public  int attackPower = 0;
     public float moveSpeed = 8.0f;
     public int  maxJump = 1;
-    public int[] attackRange = new int[6];
+    public int[] attackRange = { 0, 0, 0, 0, 0, 0};
     public int maxHP = 100;
 
     [Header("特殊能力")]

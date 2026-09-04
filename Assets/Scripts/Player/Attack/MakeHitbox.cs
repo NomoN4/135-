@@ -65,15 +65,16 @@ public class MakeHitbox : MonoBehaviour
     
     void Start()
     {
+        move = GetComponent<Move>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         attacktype = RollDice();
-        move = GetComponent<Move>();
         diceui.SetNumber(attacktype);
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(move);
         if (Freezetimer > ActiveFrame[preattacktype - 1] / FPS && move.Canmove == false)
         {
             move.Canmove = true;

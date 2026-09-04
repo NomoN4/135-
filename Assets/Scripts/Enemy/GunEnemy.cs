@@ -31,7 +31,6 @@ public class GunEnemy : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // プレイヤーとの位置関係を最初に1回だけ確認
         if (player.position.x > transform.position.x)
         {
             spriteRenderer.flipX = false;
@@ -48,6 +47,23 @@ public class GunEnemy : MonoBehaviour
         shotLine.enabled = false;
 
         StartCoroutine(ShootLoop());
+    }
+    private void Update()
+    {
+        if (player != null)
+        {
+            if (player.position.x > transform.position.x)
+            {
+                spriteRenderer.flipX = false;
+            }
+            else
+            {
+                spriteRenderer.flipX = true;
+            }
+
+            aimLine.SetPosition(0, transform.position);
+            aimLine.SetPosition(1, player.position);
+        }
     }
 
 

@@ -284,6 +284,8 @@ GameObject:
   - component: {fileID: 5130413423626903045}
   - component: {fileID: 6728728316151057679}
   - component: {fileID: 159738072729271259}
+  - component: {fileID: -2005007683734278176}
+  - component: {fileID: 7543789682315263312}
   m_Layer: 0
   m_Name: GunEnemy
   m_TagString: Enemy
@@ -427,3 +429,30 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3, y: 5.12}
   m_EdgeRadius: 0
+--- !u!114 &-2005007683734278176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4382600796307826671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b0bbd6f64cb9648b031bd917241567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 10
+--- !u!114 &7543789682315263312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4382600796307826671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ac4f7f28ca133841aadc14390ca47d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashInterval: 0.1
+  flashCount: 3
