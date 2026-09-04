@@ -6,103 +6,158 @@ public class GunEnemy : MonoBehaviour
     [Header("対象")]
     public Transform player;
 
-    [Header("射撃設定")]
-    public float aimTime = 2.0f;       // 照準する時間
-    public float flashTime = 0.8f;     // 射線が点滅する時間
-    public float shotInterval = 1.0f;  // 次の射撃まで
+    [Header("照準")]
+    public float aimTime = 2.0f;
 
-    [Header("射線")]
-    public LineRenderer aimLine;       // 赤い照準線
+    [Header("点滅")]
+    public float flashTime = 0.8f;
+    public float flashInterval = 0.1f;
 
-    [Header("発射")]
-    public LineRenderer shotLine;      // 白い光線
+    [Header("レーザー")]
     public float shotLength = 20f;
     public float shotDuration = 0.1f;
+    public float shotInterval = 1.0f;
 
-    private Vector2 targetPosition;
+    [Header("LineRenderer")]
+    public LineRenderer aimLine;
+    public LineRenderer shotLine;
+
+    public int damage;
+
+
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
-        StartCoroutine(ShootLoop());
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // プレイヤーとの位置関係を最初に1回だけ確認
+        if (player.position.x > transform.position.x)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else
+        {
+            spriteRenderer.flipX = true;
+        }
+
         aimLine.positionCount = 2;
         shotLine.positionCount = 2;
+
+        aimLine.enabled = false;
+        shotLine.enabled = false;
+
+        StartCoroutine(ShootLoop());
     }
+
 
     IEnumerator ShootLoop()
     {
         while (true)
         {
-            // -------------------------
-            // ① プレイヤーを狙い続ける
-            // -------------------------
+            // =================================
+            // ① プレイヤーを追いかけて照準
+            // =================================
 
             float timer = 0f;
+
+            aimLine.enabled = true;
 
             while (timer < aimTime)
             {
                 if (player != null)
                 {
-                    aimLine.enabled = true;
-
                     aimLine.SetPosition(0, transform.position);
-                    Debug.Log("aaa");
                     aimLine.SetPosition(1, player.position);
                 }
 
                 timer += Time.deltaTime;
+
                 yield return null;
             }
 
-            // -------------------------
-            // ② プレイヤーの位置を固定
-            // -------------------------
 
-            targetPosition = player.position;
+            // =================================
+            // ② プレイヤーの位置を記録
+            // =================================
+
+            Vector2 targetPosition = player.position;
 
             Vector2 direction =
                 (targetPosition - (Vector2)transform.position).normalized;
 
             Vector2 endPosition =
-                (Vector2)transform.position + direction * shotLength;
+                (Vector2)transform.position
+                + direction * shotLength;
 
-            // -------------------------
-            // ③ 赤い射線を点滅
-            // -------------------------
+
+            // =================================
+            // ③ 赤い照準線を点滅
+            // =================================
 
             float flashTimer = 0f;
-            bool visible = true;
 
             while (flashTimer < flashTime)
             {
-                visible = !visible;
-                aimLine.enabled = visible;
+                aimLine.enabled = !aimLine.enabled;
 
                 aimLine.SetPosition(0, transform.position);
                 aimLine.SetPosition(1, endPosition);
 
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(flashInterval);
 
-                flashTimer += 0.1f;
+                flashTimer += flashInterval;
             }
 
             aimLine.enabled = false;
 
-            // -------------------------
-            // ④ 白い光線を発射
-            // -------------------------
+
+            // =================================
+            // ④ 白いレーザー発射
+            // =================================
 
             shotLine.enabled = true;
 
             shotLine.SetPosition(0, transform.position);
             shotLine.SetPosition(1, endPosition);
 
+
+            // =================================
+            // ⑤ レーザーの当たり判定
+            // =================================
+
+            RaycastHit2D[] hits = Physics2D.RaycastAll(
+                transform.position,
+                direction,
+                shotLength
+            );
+
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.collider.CompareTag("Player"))
+                {
+                    MainCharaHealth health =
+                        hit.collider.GetComponent<MainCharaHealth>();
+
+                    if (health != null)
+                    {
+                        health.TakeDamage(damage);
+                    }
+
+                    break;
+                }
+            }
+
+
+            // レーザー表示
             yield return new WaitForSeconds(shotDuration);
 
             shotLine.enabled = false;
 
-            // -------------------------
-            // ⑤ 少し待つ
-            // -------------------------
+
+            // =================================
+            // ⑥ 次の攻撃まで待つ
+            // =================================
 
             yield return new WaitForSeconds(shotInterval);
         }

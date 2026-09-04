@@ -98,26 +98,34 @@ public class BuffManager : MonoBehaviour
         {
             case BuffType.AddJump:
                 PlayerStats.Instance.maxJump += (int)buff.value;
+                PlayerStats.Instance.AddMaxHP(0);
                 break;
 
             case BuffType.Attackup:
                 PlayerStats.Instance.attackPower +=  (int)buff.value;
+                PlayerStats.Instance.AddMaxHP(0);
                 break;
 
             case BuffType.Barrier:
                 PlayerStats.Instance.barrier = true;
+                PlayerStats.Instance.AddMaxHP(0);
                 break;
 
             case BuffType.MoveSpeed:
                 PlayerStats.Instance.moveSpeed += buff.value;
+                PlayerStats.Instance.AddMaxHP(0);
                 break;
 
             case BuffType.MaxHP:
-                PlayerStats.Instance.maxHP += (int)buff.value;
+                PlayerStats.Instance.AddMaxHP((int)buff.value);
                 break;
 
             case BuffType.AttackRange1:
-                // 後で実装
+                PlayerStats.Instance.AddMaxHP(0);
+                for(int i = 0; i < 4; i++)
+                {
+                    PlayerStats.Instance.attackRange[Random.Range(0, 6)] += (int)buff.value;
+                }
                 break;
         }
     }

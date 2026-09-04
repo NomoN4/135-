@@ -10,7 +10,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void Awake()
     {
-        currentHp = maxHp;
+        currentHp = maxHp + GameManager.Instance.floor;
     }
 
     public void TakeDamage(int damage)

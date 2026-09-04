@@ -6,6 +6,7 @@ public class MakeHitbox : MonoBehaviour
 {
     int attacktype;
     int preattacktype = 1;
+    public float[] diceWeight = { 1, 1, 1, 1, 1, 1 }; // omomi
     public float[] xOffsets; //キャラクターの座標+この値の位置に攻撃判定を出す.６こ値持つ。
     public float[] yOffsets; //キャラクターの座標+この値の位置に攻撃判定を出す.６こ値持つ。
     public float[] AttackFrame; //攻撃判定がでるフレーム
@@ -20,9 +21,26 @@ public class MakeHitbox : MonoBehaviour
     public DiceUI diceui;
     private SpriteRenderer spriteRenderer;
 
-    int GenerateRandom1to6()
+    public int RollDice()
     {
-        return Random.Range(1, 7);
+        float total = 0;
+
+        for (int i = 0; i < diceWeight.Length; i++)
+            total += diceWeight[i] + PlayerStats.Instance.attackRange[i];
+
+        float rand = Random.Range(0f, total);
+
+        float sum = 0;
+
+        for (int i = 0; i < diceWeight.Length; i++)
+        {
+            sum += diceWeight[i] + PlayerStats.Instance.attackRange[i];
+
+            if (rand <= sum)
+                return i + 1;
+        }
+
+        return 6;
     }
 
     public void SetAttackImage(int attacktype)
@@ -48,7 +66,7 @@ public class MakeHitbox : MonoBehaviour
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        attacktype = GenerateRandom1to6();
+        attacktype = RollDice();
         move = GetComponent<Move>();
         diceui.SetNumber(attacktype);
     }
@@ -122,7 +140,7 @@ public class MakeHitbox : MonoBehaviour
             Destroy(hitbox, AttackFrame[attacktype - 1] / FPS);
             
             preattacktype = attacktype;
-            attacktype = GenerateRandom1to6();
+            attacktype = RollDice();
             diceui.SetNumber(attacktype);
             
         }

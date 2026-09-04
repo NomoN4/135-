@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,15 +9,25 @@ public class GameManager : MonoBehaviour
     public bool bossBattle = false;
     public Transform playerSpawnPoint;
     public Transform player;
+    [SerializeField] private TMP_Text floorText;
 
     void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Start()
     {
-        EnemySpawner.Instance.SpawnEnemies(floor);
+        //EnemySpawner.Instance.SpawnEnemies(floor);
+        //floorText.text = floor.ToString() + "F";
     }
 
     public void EnemyClear()
@@ -32,6 +43,7 @@ public class GameManager : MonoBehaviour
 
         EnemySpawner.Instance.SpawnEnemies(floor);
         player.position = playerSpawnPoint.position;
+        floorText.text = floor.ToString() + "F";
 
     }
 
