@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Move : MonoBehaviour
 {
-    public float speed = 3.0f;
     Rigidbody2D rigidbody2d;
     float horizontalInput;
     public bool FacingRight = true;
@@ -32,7 +31,7 @@ public class Move : MonoBehaviour
         if (Canmove)
         {
             rigidbody2d.velocity = new Vector2(
-                horizontalInput * speed,
+                horizontalInput * PlayerStats.Instance.moveSpeed,
                 rigidbody2d.velocity.y
             );
         }

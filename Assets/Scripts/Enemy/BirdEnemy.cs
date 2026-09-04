@@ -29,6 +29,8 @@ public class BirdEnemy : MonoBehaviour
 
     void Update()
     {
+        if (player == null) return;
+
         if (!charging)
         {
             Patrol();

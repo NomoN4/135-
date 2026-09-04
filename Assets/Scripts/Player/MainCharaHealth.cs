@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MainCharaHealth : MonoBehaviour
 {
-    [SerializeField] private int maxHp = 3;
-
     private int currentHp;
     public float mutekijikan;
     private float mutekitimer = 0f;
@@ -15,7 +13,7 @@ public class MainCharaHealth : MonoBehaviour
 
     private void Awake()
     {
-        currentHp = maxHp;
+        currentHp = PlayerStats.Instance.maxHP;
     }
 
     private void Die()

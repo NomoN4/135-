@@ -8,8 +8,6 @@ public class Jump : MonoBehaviour
 
     public float firstSpeed = 16.0f;
     public float gravity = 120.0f;
-
-    public int maxJumpCount = 2; // 最大ジャンプ回数
     private int jumpCount = 0;   // 現在のジャンプ回数
 
     void Start()
@@ -21,7 +19,7 @@ public class Jump : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (jumpCount < maxJumpCount)
+            if (jumpCount < PlayerStats.Instance.maxJump)
             {
                 jumpCount++;
                 rigidbody2d.velocity = new Vector2(

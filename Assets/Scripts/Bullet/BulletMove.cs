@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HitboxMove : MonoBehaviour
+public class BulletMove : MonoBehaviour
 {
     public float speed = 5.0f;
     private float direction = 1.0f;
@@ -8,7 +8,6 @@ public class HitboxMove : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("HitboxMoveのmove = " + move);
 
         if (move == null)
         {

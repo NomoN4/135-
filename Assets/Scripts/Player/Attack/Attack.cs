@@ -20,7 +20,7 @@ public class Attack : MonoBehaviour
             DamageFlash damageflash = other.GetComponent<DamageFlash>();
             if (enemy != null)
             {
-                enemy.TakeDamage(damage);
+                enemy.TakeDamage(damage + PlayerStats.Instance.attackPower);
                 damageflash.Flash();
             }
         }

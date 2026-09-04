@@ -7,6 +7,7 @@ public class MakeHitbox : MonoBehaviour
     int attacktype;
     int preattacktype = 1;
     public float[] xOffsets; //キャラクターの座標+この値の位置に攻撃判定を出す.６こ値持つ。
+    public float[] yOffsets; //キャラクターの座標+この値の位置に攻撃判定を出す.６こ値持つ。
     public float[] AttackFrame; //攻撃判定がでるフレーム
     public float[] ActiveFrame; //全体フレーム
     public bool isAttacking = false;
@@ -75,15 +76,26 @@ public class MakeHitbox : MonoBehaviour
                 pos.x += xOffsets[attacktype - 1];
             else
                 pos.x -= xOffsets[attacktype - 1];
+            pos.y += yOffsets[attacktype - 1];
 
 
             GameObject hitbox = Instantiate(
                 hitboxPrefabs[attacktype - 1],
                 pos,
                 Quaternion.identity
-            );     
+            );
 
-            HitboxMove hitboxMove = hitbox.GetComponent<HitboxMove>();
+            if (!move.FacingRight)
+            {
+                SpriteRenderer hitboxSprite = hitbox.GetComponent<SpriteRenderer>();
+
+                if (hitboxSprite != null)
+                {
+                    hitboxSprite.flipX = true;
+                }
+            }
+
+            BulletMove hitboxMove = hitbox.GetComponent<BulletMove>();
 
             if (hitboxMove != null)
             {
