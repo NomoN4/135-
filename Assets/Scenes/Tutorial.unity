@@ -3023,7 +3023,7 @@ MonoBehaviour:
   maxJump: 1
   attackRange: 000000000000000000000000000000000000000000000000
   maxHP: 100
-  barrier: 1
+  barrier: 0
 --- !u!114 &1720910279
 MonoBehaviour:
   m_ObjectHideFlags: 0
