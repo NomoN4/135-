@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //EnemySpawner.Instance.SpawnEnemies(floor);
-        //floorText.text = floor.ToString() + "F";
+        floorText.text = floor.ToString() + "F";
     }
 
     public void EnemyClear()
@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
 
         EnemySpawner.Instance.SpawnEnemies(floor);
         player.position = playerSpawnPoint.position;
+        Debug.Log(floor);
         floorText.text = floor.ToString() + "F";
 
     }
